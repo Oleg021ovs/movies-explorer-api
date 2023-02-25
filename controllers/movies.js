@@ -5,9 +5,8 @@ const ForbiddenError = require('../error/ForbiddenErr');
 
 module.exports.getFilm = (req, res, next) => {
   movies.find({})
-    .then((films) => {
-      res.send(films);
-    })
+    .populate('owner')
+    .then((films) => res.send(films.reverse()))
     .catch((err) => next(err));
 };
 module.exports.createFilm = (req, res, next) => {
@@ -41,15 +40,15 @@ module.exports.createFilm = (req, res, next) => {
 };
 
 module.exports.deleteFilm = (req, res, next) => {
-  movies.findById(req.params.id)
+  movies.findById(req.params.movieId)
     .then((films) => {
       if (!films) {
-        throw new NotFoundError(`404 - Фильм с указанным _id ${req.params.id} не найден`);
+        throw new NotFoundError(`404 - фильм с указанным _id ${req.params.movieId} не найден`);
       }
-      if (movies.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('403 - Вы не можете удалить чужой фильм');
+      if (films.owner.toString() !== req.user._id) {
+        throw new ForbiddenError('403 - Вы не можете удалить чужуй фильм');
       }
-      return movies.remove();
+      return films.remove();
     })
     .then(() => {
       res.send({ message: '200 - фильм успешно удален' });
