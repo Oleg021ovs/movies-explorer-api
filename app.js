@@ -35,3 +35,4 @@ mongoose.connect(NODE_ENV !== 'production' ? MONGO_PRODUCTION : MONGO_DEV);
 app.listen(NODE_ENV !== 'production' ? PORT_PRODUCTION : PORT_DEV, () => {
   console.log('App started');
 });
+// App
