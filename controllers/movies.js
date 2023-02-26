@@ -46,7 +46,7 @@ module.exports.deleteFilm = (req, res, next) => {
         throw new NotFoundError(`404 - фильм с указанным _id ${req.params.movieId} не найден`);
       }
       if (films.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('403 - Вы не можете удалить чужуй фильм');
+        throw new ForbiddenError('403 - Вы не можете удалить чужой фильм');
       }
       return films.remove();
     })
