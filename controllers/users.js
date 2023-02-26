@@ -4,6 +4,7 @@ const User = require('../models/users');
 const BadRequestError = require('../error/badReqErr');
 const NotFoundError = require('../error/notFoundErr');
 const ConflictError = require('../error/conflictErr');
+const { JWT_SECRET_DEV } = require('../constans/constans');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -74,7 +75,7 @@ module.exports.login = (req, res, next) => {
       // создадим токен
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV,
         { expiresIn: '7d' }, // токен будет просрочен через 7 дней после создания
       );
 

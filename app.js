@@ -2,58 +2,36 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const helmet = require('helmet');
 const cors = require('cors');
-const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const routes = require('./routes/index');
+const errorHandler = require('./middlewares/errorHandler');
+const { MONGO_DEV, PORT_DEV } = require('./constans/constans');
 
-const auth = require('./middlewares/auth');
-const { createProfile, login } = require('./controllers/users');
+const { NODE_ENV, PORT_PRODUCTION, MONGO_PRODUCTION } = process.env;
 
-const { PORT = 3000 } = process.env;
 const app = express();
+
+app.use(helmet()); // используем helmet
 app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(requestLogger); // подключаем логгер запросов
 
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createProfile);
-
-app.use('/users', auth, require('./routes/users'));
-app.use('/movies', auth, require('./routes/movies'));
-
-app.use(auth);
+routes(app); // роуты
 
 app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  if (err.statusCode) {
-    return res.status(err.statusCode).send({ message: err.message });
-  }
-  res.status(500).send(err.message);
+errorHandler(app); // обработка всех ошибок
 
-  return next();
-});
+mongoose.connect(NODE_ENV !== 'production' ? MONGO_PRODUCTION : MONGO_DEV);
 
-mongoose.connect('mongodb://127.0.0.1:27017/moviesdb');
-app.listen(PORT, () => {
-  console.log(`App started ${PORT}`);
+app.listen(NODE_ENV !== 'production' ? PORT_PRODUCTION : PORT_DEV, () => {
+  console.log('App started');
 });
-// app

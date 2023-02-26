@@ -30,7 +30,7 @@ const movieSchema = new mongoose.Schema({
       validator(URL) {
         return linkValidate.test(URL);
       },
-      message: () => 'Неверный формат ссылки',
+
     },
   },
 
@@ -41,7 +41,7 @@ const movieSchema = new mongoose.Schema({
       validator(URL) {
         return linkValidate.test(URL);
       },
-      message: () => 'Неверный формат ссылки',
+
     },
   },
 
@@ -52,7 +52,7 @@ const movieSchema = new mongoose.Schema({
       validator(URL) {
         return linkValidate.test(URL);
       },
-      message: () => 'Неверный формат ссылки',
+
     },
   },
 
@@ -64,7 +64,7 @@ const movieSchema = new mongoose.Schema({
 
   movieId: {
     // type: mongoose.Schema.Types.ObjectId,
-    type: String,
+    type: Number,
     required: true,
   },
 
