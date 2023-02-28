@@ -23,7 +23,7 @@ module.exports = (app) => {
 
   app.use('/users', auth, users);
   app.use('/movies', auth, movies);
-
+  // app.use('/', auth, NotFoundError);
   app.use((req, res, next) => {
     next(new NotFoundError('404 - Страницы не существует'));
   });

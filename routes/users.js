@@ -1,10 +1,9 @@
 const userRouter = require('express').Router();
 
-const { editProfileValid } = require('../validation/userValidation');
-
 const {
   getProfile, editProfile,
 } = require('../controllers/users');
+const { editProfileValid } = require('../validation/userValidation');
 
 userRouter.get('/me', getProfile);
 

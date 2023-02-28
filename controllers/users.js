@@ -4,9 +4,7 @@ const User = require('../models/users');
 const BadRequestError = require('../error/badReqErr');
 const NotFoundError = require('../error/notFoundErr');
 const ConflictError = require('../error/conflictErr');
-const { JWT_SECRET_DEV } = require('../constans/constans');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_SECRET } = require('../constans/constans');
 
 module.exports.getProfile = (req, res, next) => {
   User.findById(req.user._id)
@@ -23,11 +21,24 @@ module.exports.getProfile = (req, res, next) => {
 module.exports.editProfile = (req, res, next) => {
   const { email, name } = req.body;
 
+  if (!email || !name) {
+    next(new NotFoundError('Пользователь по указанному id не найден'));
+    return;
+  }
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
+
     .then((user) => res.send(user))
     .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('Такой пользователь уже существует!'));
+        return;
+      }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении пользователя'));
+        next(
+          new BadRequestError(
+            'Переданы некорректные данные при обновлении пользователя',
+          ),
+        );
         return;
       }
       next(err);
@@ -75,7 +86,7 @@ module.exports.login = (req, res, next) => {
       // создадим токен
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV,
+        JWT_SECRET,
         { expiresIn: '7d' }, // токен будет просрочен через 7 дней после создания
       );
 
