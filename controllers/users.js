@@ -21,12 +21,7 @@ module.exports.getProfile = (req, res, next) => {
 module.exports.editProfile = (req, res, next) => {
   const { email, name } = req.body;
 
-  if (!email || !name) {
-    next(new NotFoundError('Пользователь по указанному id не найден'));
-    return;
-  }
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
-
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === 11000) {

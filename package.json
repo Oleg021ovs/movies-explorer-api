@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint ./"
   },
   "keywords": [],
   "author": "",
@@ -28,7 +28,8 @@
     "mongoose": "^6.9.3",
     "node_env": "^0.0.3",
     "validator": "^13.9.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "express-rate-limit": "^6.7.0"
   },
   "devDependencies": {
     "eslint": "^8.34.0",
@@ -36,4 +37,5 @@
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.20"
   }
+
 }

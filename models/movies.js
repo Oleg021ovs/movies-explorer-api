@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { linkValidate } = require('../constans/constans');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -26,34 +25,16 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: {
-      validator(URL) {
-        return linkValidate.test(URL);
-      },
-
-    },
   },
 
   trailerLink: {
     type: String,
     required: true,
-    validate: {
-      validator(URL) {
-        return linkValidate.test(URL);
-      },
-
-    },
   },
 
   thumbnail: {
     type: String,
     required: true,
-    validate: {
-      validator(URL) {
-        return linkValidate.test(URL);
-      },
-
-    },
   },
 
   owner: {

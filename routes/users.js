@@ -7,6 +7,6 @@ const { editProfileValid } = require('../validation/userValidation');
 
 userRouter.get('/me', getProfile);
 
-userRouter.patch('/me', editProfile, editProfileValid);
+userRouter.patch('/me', editProfileValid, editProfile);
 
 module.exports = userRouter;

@@ -28,7 +28,7 @@ module.exports.createFilmValidation = celebrate({
     }),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
-    nameEN: Joi.string(),
+    nameEN: Joi.string().required(),
   }),
 });
 

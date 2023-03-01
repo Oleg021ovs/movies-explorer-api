@@ -10,7 +10,6 @@ module.exports.getFilm = (req, res, next) => {
     .catch((err) => next(err));
 };
 module.exports.createFilm = (req, res, next) => {
-  console.log(req.user._id);
   const {
     country, director, duration, year, description, image, trailerLink, thumbnail, movieId,
     nameRU, nameEN,
