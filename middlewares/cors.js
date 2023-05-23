@@ -1,6 +1,8 @@
 const allowedCors = [
   'https://api.oleg021movies.nomoredomains.work',
-  'http://api.oleg021movies.nomoredomains.work',
+  //'http://api.oleg021movies.nomoredomains.work',
+  'https://oleg021diplom.nomoredomains.monster',
+  //'http://oleg021diplom.nomoredomains.monster',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
